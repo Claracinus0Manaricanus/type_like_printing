@@ -6,10 +6,10 @@ This is a very simple library to print out to the terminal as if it was being ty
 
 # Building
 
-to build a shared object .so and static .a file of the library for linking do
+to build a shared object .so and static .a file of the library for linking do  
 `make all`
 
-to build the test.c and test and see the example do
+to build the test.c and test and see the example do  
 `make test`
 
 # Linking
@@ -18,7 +18,7 @@ For linking you can use the flag -lcm_tlp with compilers such as gcc and clang, 
 
 # Test Executable
 
-You can test out the test executable while you are in the same directory as the Makefile, run:
+You can test out the test executable while you are in the same directory as the Makefile, run:  
 `./build/test example.csv`
 
 # Future Plans
