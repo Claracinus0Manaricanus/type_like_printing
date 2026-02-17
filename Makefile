@@ -1,7 +1,7 @@
 INC = -I./include
 o_dir = ./build
 
-all:
+all: $(o_dir)/cm_tlp.o
 
 test: $(o_dir)/test
 
