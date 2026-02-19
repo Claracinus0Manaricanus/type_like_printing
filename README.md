@@ -19,7 +19,11 @@ For linking you can use the flag -lcm_tlp with compilers such as gcc and clang, 
 # Test Executable
 
 You can test out the test executable while you are in the same directory as the Makefile, run:  
-`./build/test example.csv`
+`./build/test example.csv`  
+
+Or just do  
+`make run_test`
+
 
 # Future Plans
 
