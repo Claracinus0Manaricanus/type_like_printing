@@ -30,35 +30,37 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  /* array that stores the key and duration values */
-  STR_Print_Job *queue = NULL;
-  /* key press count */
-  size_t queue_length = 0;
   /* duration for sleeping */
   struct timespec duration;
 
-  /* opening the csv file */
-  FILE *csv_file = fopen(argv[1], "r");
-  if (csv_file == NULL) {
-    fprintf(stderr, "couldn't open the csv file! Does %s exists?\n", argv[1]);
+  /* usage 1, creating a queue seperately and using it */
+  CMTLP_Queue queue = cmtlp_fgenQueue(argv[1]);
+  /* you can also read the file yourself and call another function to create the
+   * queue from the file's data */
+  /* STR_Print_Queue queue =
+   * cmtlp_sgenQueue(file_data, file_data_size_in_bytes); */
+
+  if (queue.queue == NULL) {
+    fprintf(stderr,
+            "problem with csv file or data! Does %s exists and is it valid?\n",
+            argv[1]);
     return 1;
   }
 
-  fseek(csv_file, 0, SEEK_END);
-  size_t filesize = ftell(csv_file);
-  rewind(csv_file);
+  printf("usage 1 result:\n");
+  cmtlp_print(queue);
+  /* or cmtlp_fprint((FILE*) file, queue); can also be used to specify the
+   * output stream */
 
-  char *file_data = malloc(filesize);
-  fread(file_data, 1, filesize, csv_file);
+  /* don't forget to free the generated queue */
+  cmtlp_freeQueue(queue);
 
-  fclose(csv_file);
+  printf("usage 2 result:\n");
+  /* usage 2, generating the queue and using it immediately */
+  cmtlp_printfree(cmtlp_fgenQueue(argv[1]));
 
-  queue_length = cmtlp_genQueue(file_data, filesize + 1, &queue);
-  free(file_data);
-
-  cmtlp_print(queue, queue_length);
-
-  cmtlp_freeQueue(&queue, queue_length);
+  /* no need to call free function for the second usage if you use the correct
+   * funtion (cmtlp_printFree or cmtlp_fprintfree for specifying the stream) */
 
   return 0;
 }

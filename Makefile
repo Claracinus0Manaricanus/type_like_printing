@@ -19,3 +19,11 @@ $(o_dir)/libcm_tlp.a: $(o_dir)/libcm_tlp.o
 
 $(o_dir)/test: $(o_dir)/libcm_tlp.o
 	cc $(INC) -o $(o_dir)/test ./tests/test.c $(o_dir)/libcm_tlp.o
+
+clear:
+ifneq ("$(wildcard ./build)","")
+	rm -r build
+endif
+
+run_test: clear test
+	./build/test example.csv
