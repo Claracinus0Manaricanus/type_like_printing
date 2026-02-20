@@ -62,5 +62,11 @@ int main(int argc, char **argv) {
   /* no need to call free function for the second usage if you use the correct
    * funtion (cmtlp_printFree or cmtlp_fprintfree for specifying the stream) */
 
+  printf("usage 3 result:\n");
+  /* usage 3, you can use utf-8 formatted zero terminated strings to
+   * autmatically generate type like printing queue for them. No need for csv */
+  cmtlp_printfree(cmtlp_sgenQueueStr(
+      "Testing this utf8 string,\nこれはただ、テストです。\n"));
+
   return 0;
 }

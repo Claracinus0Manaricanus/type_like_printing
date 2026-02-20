@@ -132,6 +132,82 @@ CMTLP_Queue cmtlp_fgenQueueCSV(const char *csv_path) {
 }
 
 CMTLP_Queue cmtlp_sgenQueueStr(const char *str) {
+  int i = 0;
+  CMTLP_Queue queue = {0, NULL};
+
+  char utf8_buffer[4] = {0};
+  int len = 0;
+  int expected_len = 0;
+
+  srand(time(NULL));
+
+  while (str[i] != 0) {
+    if (len == 0) {
+      /* multi byte character */
+      if (0x80 & str[i]) {
+        while (0x80 & (str[i] << expected_len))
+          expected_len++;
+
+        /* means a character is expected to take more than 4 bytes which is not
+         * supported so skipping those bytes; or there is a byte error which,
+         * again, we skip. */
+        if (expected_len > 4 || expected_len == 1) {
+          i += expected_len;
+          expected_len = 0;
+          continue;
+        }
+
+        utf8_buffer[len] = str[i];
+        len++;
+      }
+
+      /* single byte character */
+      else {
+        queue.length++;
+        queue.queue = realloc(queue.queue, sizeof(CMTLP_Job) * queue.length);
+        queue.queue[queue.length - 1].str = malloc(2);
+        queue.queue[queue.length - 1].str[0] = str[i];
+        queue.queue[queue.length - 1].str[1] = 0;
+
+        srand(rand());
+        queue.queue[queue.length - 1].duration = 80000000 + (rand() % 61000000);
+      }
+    }
+
+    /* handling the multi byte character */
+    else {
+      /* byte error, stopping to handle multi byte character and skipping it */
+      if ((0xc0 & str[i]) ^ 0x80) {
+        i += (expected_len - len);
+        expected_len = 0;
+        len = 0;
+        continue;
+      }
+
+      utf8_buffer[len] = str[i];
+      len++;
+
+      if (len == expected_len) {
+        queue.length++;
+        queue.queue = realloc(queue.queue, sizeof(CMTLP_Job) * queue.length);
+        queue.queue[queue.length - 1].str = malloc(len + 1);
+        for (int j = 0; j < len; j++) {
+          queue.queue[queue.length - 1].str[j] = utf8_buffer[j];
+        }
+        queue.queue[queue.length - 1].str[len] = 0;
+
+        srand(rand());
+        queue.queue[queue.length - 1].duration = 80000000 + (rand() % 61000000);
+
+        expected_len = 0;
+        len = 0;
+      }
+    }
+
+    i++;
+  }
+
+  return queue;
 }
 
 void cmtlp_freeQueue(CMTLP_Queue queue) {
