@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
   struct timespec duration;
 
   /* usage 1, creating a queue seperately and using it */
-  CMTLP_Queue queue = cmtlp_fgenQueue(argv[1]);
+  CMTLP_Queue queue = cmtlp_fgenQueueCSV(argv[1]);
   /* you can also read the file yourself and call another function to create the
    * queue from the file's data */
   /* STR_Print_Queue queue =
@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
 
   printf("usage 2 result:\n");
   /* usage 2, generating the queue and using it immediately */
-  cmtlp_printfree(cmtlp_fgenQueue(argv[1]));
+  cmtlp_printfree(cmtlp_fgenQueueCSV(argv[1]));
 
   /* no need to call free function for the second usage if you use the correct
    * funtion (cmtlp_printFree or cmtlp_fprintfree for specifying the stream) */

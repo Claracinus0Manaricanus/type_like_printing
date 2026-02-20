@@ -22,7 +22,7 @@ Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <string.h>
 #include <time.h>
 
-CMTLP_Queue cmtlp_sgenQueue(const char *csv_data, size_t size) {
+CMTLP_Queue cmtlp_sgenQueueCSV(const char *csv_data, size_t size) {
   /* pre-defined format of the csv file */
   const char *csv_format = "Key,Duration(ms)";
 
@@ -109,7 +109,7 @@ CMTLP_Queue cmtlp_sgenQueue(const char *csv_data, size_t size) {
   return (CMTLP_Queue){queue_length, queue};
 }
 
-CMTLP_Queue cmtlp_fgenQueue(const char *csv_path) {
+CMTLP_Queue cmtlp_fgenQueueCSV(const char *csv_path) {
   /* opening the csv file */
   FILE *csv_file = fopen(csv_path, "r");
   if (csv_file == NULL) {
@@ -125,10 +125,13 @@ CMTLP_Queue cmtlp_fgenQueue(const char *csv_path) {
 
   fclose(csv_file);
 
-  CMTLP_Queue queue = cmtlp_sgenQueue(file_data, filesize);
+  CMTLP_Queue queue = cmtlp_sgenQueueCSV(file_data, filesize);
   free(file_data);
 
   return queue;
+}
+
+CMTLP_Queue cmtlp_sgenQueueStr(const char *str) {
 }
 
 void cmtlp_freeQueue(CMTLP_Queue queue) {

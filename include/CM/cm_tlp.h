@@ -26,19 +26,22 @@ typedef struct CMTLP_Queue {
 /**
  * takes in csv data to generate a STR_Print_Job array, size should be the size
  * of csv data in bytes csv files should have a format row and the format should
- * be "Key,Duration(ms)"
- * the out is a pointer to a pointer that should initially be NULL
- * returns 0 on error
+ * be "Key,Duration(ms)". returns (CMTLP_Queue){0, NULL} on error
  */
-CMTLP_Queue cmtlp_sgenQueue(const char *csv_data, size_t size);
+CMTLP_Queue cmtlp_sgenQueueCSV(const char *csv_data, size_t size);
 
 /**
- * takes in a csv file path to generate a STR_Print_Job array, size should be
- * the size of csv data in bytes csv files should have a format row and the
- * format should be "Key,Duration(ms)" the out is a pointer to a pointer that
- * should initially be NULL returns 0 on error
+ * takes in a csv file path to generate a STR_Print_Job array, csv files should
+ * have a format row and the format should be "Key,Duration(ms)". returns
+ * (CMTLP_Queue){0, NULL} on error
  */
-CMTLP_Queue cmtlp_fgenQueue(const char *csv_path);
+CMTLP_Queue cmtlp_fgenQueueCSV(const char *csv_path);
+
+/**
+ * takes in a string to print and generates the queue randomly assigning a wait
+ * time between 80-140 ms to each character, supports utf-8
+ */
+CMTLP_Queue cmtlp_sgenQueueStr(const char *str);
 
 /**
  * frees the STR_Print_Job array allocated by genQueue
