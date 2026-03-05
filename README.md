@@ -12,6 +12,13 @@ to build a shared object .so and static .a file of the library for linking do
 to build the test.c and test and see the example do  
 `make test`
 
+or for nix users that want the library (no test)  
+`nix build`
+
+for test you can do  
+`nix build .#test`  
+and the binary will be at result/bin
+
 # Linking
 
 For linking you can use the flag -lcm_tlp with compilers such as gcc and clang, make sure the directory that has the library is in the search path for libraries.
