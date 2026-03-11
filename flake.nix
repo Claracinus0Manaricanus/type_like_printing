@@ -23,15 +23,18 @@
           "out"
         ];
 
+        configurePhase = "";
+
+        buildPhase = ''
+          make all
+        '';
+
         installPhase = ''
           mkdir -p $out/lib
-          mkdir -p $out/include
-
-          make clear
-          make all
+          mkdir -p $out/usr/include
 
           install -m 555 ./build/*.a ./build/*.so $out/lib/
-          cp -r ./include $out/include
+          cp -r ./include $out/usr/include
         '';
       };
       packages.x86_64-linux.test = pkgs.stdenv.mkDerivation {
